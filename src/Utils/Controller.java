@@ -1,16 +1,16 @@
 package Utils;
 
-// import org.rendersnake.HtmlCanvas;
+import org.rendersnake.HtmlCanvas;
 
 public abstract class Controller {
 
     protected Model model;
-    // protected HtmlCanvas html;
+    protected HtmlCanvas html;
     private String defaultErrorMessage = "<h1>Ops! SOMETHING GOES WRONG!!</h1>";
 
     public Controller(Model model) {
         this.model = model;
-        // this.html = new HtmlCanvas();
+        this.html = new HtmlCanvas();
     }
 
     public String indexHTML() {
