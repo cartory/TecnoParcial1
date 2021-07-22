@@ -5,7 +5,7 @@ import Utils.Controller;
 
 public class ServiceController extends Controller {
 
-    private ServiceController() {
+    public ServiceController() {
         super(new Service());
     }
 }
