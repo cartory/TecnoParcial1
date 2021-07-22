@@ -1,5 +1,9 @@
 package Utils;
 
+import java.util.HashMap;
+
+import Utils.Model.DataType;
+
 import org.rendersnake.HtmlCanvas;
 
 public abstract class Controller {
@@ -11,6 +15,10 @@ public abstract class Controller {
     public Controller(Model model) {
         this.model = model;
         this.html = new HtmlCanvas();
+    }
+
+    public HashMap<String, DataType> getATTRIBS() {
+        return this.model.getATTRIBS();
     }
 
     public String indexHTML() {
