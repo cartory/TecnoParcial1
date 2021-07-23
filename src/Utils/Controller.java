@@ -1,9 +1,5 @@
 package Utils;
 
-import java.util.HashMap;
-
-import Utils.Model.DataType;
-
 import org.rendersnake.HtmlCanvas;
 
 public abstract class Controller {
@@ -12,12 +8,13 @@ public abstract class Controller {
     protected HtmlCanvas html;
     private String defaultErrorMessage = "<h1>Ops! SOMETHING GOES WRONG!!</h1>";
 
+    // MUST CONNECT WITH RENDER CLASS
     public Controller(Model model) {
         this.model = model;
         this.html = new HtmlCanvas();
     }
 
-    public HashMap<String, DataType> getATTRIBS() {
+    public Object[][] getATTRIBS() {
         return this.model.getATTRIBS();
     }
 

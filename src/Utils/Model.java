@@ -3,8 +3,6 @@ package Utils;
 import java.sql.*;
 import java.util.regex.*;
 
-import java.util.HashMap;
-
 /**
  *
  * @author cartory
@@ -16,40 +14,41 @@ public abstract class Model {
 	}
 
 	protected String TABLE;
-	protected String[] COLUMNS;
-	protected HashMap<String, DataType> ATTRIBS;
-
-	protected DataType[] dataTypes;
+	protected Object ATTRIBS[][];
 	protected final DBConnection connection;
 
 	public Model() {
-		this.connection = new DBConnection();
+		this.connection = DBConnection.getInstance();
 	}
 
-	public Model(String TABLE, HashMap<String, DataType> ATTRIBS) {
-		this.ATTRIBS = ATTRIBS;
-		this.COLUMNS = ATTRIBS.keySet().toArray(new String[0]);
-		this.dataTypes = ATTRIBS.values().toArray(new DataType[0]);
-
-		this.connection = new DBConnection();
-	}
-
-	public Model(String TABLE, String[] COLUMNS) {
+	public Model(String TABLE, Object ATTRIBS[][]) {
 		this.TABLE = TABLE;
-		this.COLUMNS = COLUMNS;
-		this.connection = new DBConnection();
+		this.ATTRIBS = ATTRIBS;
+		this.connection = DBConnection.getInstance();
 	}
 
-	public HashMap<String, DataType> getATTRIBS() {
+	public Object[][] getATTRIBS() {
 		return this.ATTRIBS;
 	}
 
 	public DataType[] getDataTypes() {
-		return this.dataTypes;
+		DataType datatypes[] = new DataType[this.ATTRIBS.length];
+
+		for (int i = 0; i < datatypes.length; i++) {
+			datatypes[i] = (DataType) this.ATTRIBS[i][1];
+		}
+
+		return datatypes;
 	}
 
 	public String[] getCOLUMNS() {
-		return this.COLUMNS;
+		String columns[] = new String[this.ATTRIBS.length];
+
+		for (int i = 0; i < columns.length; i++) {
+			columns[i] = (String) this.ATTRIBS[i][0];
+		}
+
+		return columns;
 	}
 
 	private static boolean isNumber(Object arg) {
@@ -77,8 +76,8 @@ public abstract class Model {
 			}
 
 			VALUES += "%s";
-			COLS += COLUMNS[i];
-			if (i < args.length) {
+			COLS += ATTRIBS[i + 1][0];
+			if (i < args.length - 1) {
 				COLS += ", ";
 				VALUES += ", ";
 			}
@@ -96,8 +95,12 @@ public abstract class Model {
 			if (!isNumber(args[i])) {
 				args[i] = "'" + args[i] + "'";
 			}
-			VALUES += this.COLUMNS[i];
-			VALUES += (i == this.COLUMNS.length - 1) ? "= %s " : "= %s, ";
+
+			VALUES += this.ATTRIBS[i][0] + "= %s";
+
+			if (i < this.ATTRIBS.length - 1) {
+				VALUES += ",";
+			}
 		}
 
 		String sql = String.format("UPDATE " + this.TABLE + " SET " + VALUES + "WHERE id = %s", args);

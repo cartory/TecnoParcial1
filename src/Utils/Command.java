@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.function.BiFunction;
 
 import Controllers.*;
-import Utils.Model.DataType;
 
 public class Command {
 
@@ -32,7 +31,7 @@ public class Command {
         this.useCaseMap = new HashMap<String, Controller>() {
             {
                 put("Gestionar Usuario@usuario", new UserController());
-                put("Gestionar Servicio@servicio", new ServiceController());
+                // put("Gestionar Servicio@servicio", new ServiceController());
             }
         };
     }
@@ -43,19 +42,15 @@ public class Command {
     }
 
     private String getCommandString(String key, Controller controller) {
-        HashMap<String, DataType> attributes = controller.getATTRIBS();
+        Object attributes[][] = controller.getATTRIBS();
 
         String res = "";
-        int i = 0, colCount = attributes.size();
 
-        for (Map.Entry<String, DataType> set : attributes.entrySet()) {
-            res += set.getValue() + " " + set.getKey();
-
-            if (i < colCount - 1) {
+        for (int i = 0; i < attributes.length; i++) {
+            res += attributes[i][1] + " " + attributes[i][0];
+            if (i < attributes.length - 1) {
                 res += SPLIT;
             }
-
-            i++;
         }
 
         return key + "[" + res + "];";
