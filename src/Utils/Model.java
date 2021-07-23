@@ -62,7 +62,7 @@ public abstract class Model {
 	}
 
 	public DataTable selectOne(String id) {
-		String sql = "SELECT * FROM " + this.TABLE + "WHERE id = " + id;
+		String sql = "SELECT * FROM " + this.TABLE + " WHERE id = " + id;
 		return new DataTable((ResultSet) this.connection.query(sql));
 	}
 
@@ -96,14 +96,11 @@ public abstract class Model {
 				args[i] = "'" + args[i] + "'";
 			}
 
-			VALUES += this.ATTRIBS[i][0] + "= %s";
-
-			if (i < this.ATTRIBS.length - 1) {
-				VALUES += ",";
-			}
+			VALUES += this.ATTRIBS[i][0] + "=%s";
+			VALUES += (i < this.ATTRIBS.length - 1) ? ", " : " ";
 		}
 
-		String sql = String.format("UPDATE " + this.TABLE + " SET " + VALUES + "WHERE id = %s", args);
+		String sql = String.format("UPDATE " + this.TABLE + " SET " + VALUES + "WHERE id = " + args[0], args);
 
 		return (boolean) this.connection.query(sql);
 	}

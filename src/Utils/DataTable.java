@@ -18,7 +18,7 @@ public class DataTable {
       ResultSetMetaData metadata = result.getMetaData();
       this.names = new String[metadata.getColumnCount()];
 
-      for (int i = 1; i < names.length; i++) {
+      for (int i = 1; i < names.length + 1; i++) {
         names[i - 1] = metadata.getColumnName(i);
       }
 
