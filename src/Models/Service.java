@@ -6,7 +6,6 @@
 package Models;
 
 import Utils.Model;
-import java.util.HashMap;
 
 /**
  *
@@ -15,14 +14,16 @@ import java.util.HashMap;
 public class Service extends Model {
 
   public Service() {
-    super("service", new HashMap<String, DataType>() {
-      {
-        put("id", DataType.INTEGER);
-        put("price", DataType.FLOAT);
-        put("name", DataType.INTEGER);
-        put("status", DataType.INTEGER);
-        put("serviceType", DataType.STRING);
-      }
+    super("servicio", new Object[][] {
+
+        { "id", DataType.STRING },
+
+        { "nombre", DataType.STRING },
+
+        { "precio", DataType.FLOAT },
+
+        { "tipo_servicio", DataType.STRING },
+
     });
   }
 }
