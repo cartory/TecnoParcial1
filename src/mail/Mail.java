@@ -28,7 +28,7 @@ public class Mail {
         this.pool = Executors.newFixedThreadPool(MAX_T);
     }
 
-    public static Mail getinstance() {
+    public static Mail getInstance() {
         if (instance == null) {
             instance = new Mail();
         }
