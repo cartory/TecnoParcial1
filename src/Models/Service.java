@@ -16,7 +16,7 @@ public class Service extends Model {
   public Service() {
     super("servicio", new Object[][] {
 
-        { "id", DataType.STRING },
+        { "id", DataType.INTEGER },
 
         { "nombre", DataType.STRING },
 
