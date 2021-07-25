@@ -1,17 +1,15 @@
 package Utils;
 
-import org.rendersnake.HtmlCanvas;
-
 public abstract class Controller {
 
     protected Model model;
-    protected HtmlCanvas html;
+    protected RenderHTML renderHTML;
     private String defaultErrorMessage = "<h1>Ops! SOMETHING GOES WRONG!!</h1>";
 
     // MUST CONNECT WITH RENDER CLASS
     public Controller(Model model) {
         this.model = model;
-        this.html = new HtmlCanvas();
+        this.renderHTML = RenderHTML.getInstance();
     }
 
     public Object[][] getATTRIBS() {
@@ -34,7 +32,7 @@ public abstract class Controller {
             Object[] parsedData = Validator.getInstance().parseData(args, model);
 
             if (model.create(parsedData)) {
-                return "<h1>CREATE SUCCESSFULL!!</h1>";
+                return renderHTML.dataTableHTML(this.model.TABLE, this.model.selectAll());
             }
 
         } catch (Exception e) {
@@ -58,20 +56,20 @@ public abstract class Controller {
             data = Validator.getInstance().parseData(args, this.model);
 
             if (this.model.update(data)) {
-                return "<h1>UPDATE SUCCESSFULL!!</h1>";
+                return this.renderHTML.dataTableHTML(this.model.TABLE, this.model.selectAll());
             }
         } catch (Exception e) {
             System.err.println(e);
         }
 
-        return "";
+        return defaultErrorMessage;
     }
 
     public String showHTML(String id) {
         try {
             DataTable table = this.model.selectOne(id);
             if (table.getRowCount() > 0) {
-                return "<h1>SHOW SUCCESSFULL!!</h1>";
+                return this.renderHTML.dataTableHTML(this.model.TABLE, this.model.selectAll());
             } else {
                 return "<h1>ERROR 404 NOT FOUND!!</h1>";
             }
@@ -83,12 +81,8 @@ public abstract class Controller {
     }
 
     public String DeleteHTML(String id) {
-        try {
-            if (this.model.delete(id)) {
-                return "<h1>CREATE SUCCESSFULL!!</h1>";
-            }
-        } catch (Exception e) {
-            System.err.println(e);
+        if (this.model.delete(id)) {
+            return this.renderHTML.dataTableHTML(this.model.TABLE, this.model.selectAll());
         }
 
         return defaultErrorMessage;
