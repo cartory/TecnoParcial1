@@ -1,20 +1,24 @@
-// import mail.Mail;
+import mail.Mail;
 
 import java.io.IOException;
-
-import Models.User;
+import Controllers.UserController;
 
 public class Main {
     public static int MAX_T = 20;
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        User user = new User();
-        System.out.println("USER CREATE ");
 
-        String data[] = new String[] { "cari", "cari@gmail.com", "cari", "74942908", "M" };
-        user.create(data);
+        int emails = Mail.getInstance().getMails();
+        while (true) {
+            int emails_query = Mail.getInstance().getMails();
 
-        System.out.println("USER CREATE ");
-        System.out.println(user);
+            if (emails_query > emails) {
+                Mail.getInstance().sendMail(emails + 1, emails_query);
+                emails = emails_query;
+            }
+            
+            System.out.println("Waiting to check new emails...");
+            Thread.sleep(10000);
+        }
     }
 }
